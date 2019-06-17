@@ -1,6 +1,6 @@
 {
-  "name": "cordova-plugin-bugly-sdk",
-  "version": "1.0.0",
+  "name": "@osvlabs/cordova-plugin-bugly-sdk",
+  "version": "1.0.1",
   "cordova": {
     "id": "cordova-plugin-bugly-sdk",
     "platforms": [
@@ -9,8 +9,8 @@
     ]
   },
   "description": "Cordova Crash Reporter",
-  "repository": "https://github.com/jasonz1987/cordova-plugin-bugly-sdk.git",
-  "issue": "https://github.com/jasonz1987/cordova-plugin-bugly-sdk/issues",
+  "repository": "https://github.com/osvlabs/cordova-plugin-bugly-sdk.git",
+  "issue": "https://github.com/osvlabs/cordova-plugin-bugly-sdk/issues",
   "keywords": [
     "cordova",
     "bugly",
@@ -20,6 +20,6 @@
     "exception",
     "symbol"
   ],
-  "author":"Jason.z",
+  "author":"vitta",
   "license": "Apache 2.0 License"
 }

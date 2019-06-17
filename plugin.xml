@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     id="cordova-plugin-bugly-sdk"
-    version="1.0.0">
+    version="1.0.1">
 
   <name>Bugly</name>
   <description>Bugly SDK Cordova Plugin </description>
@@ -20,7 +20,6 @@
   </js-module>
   <!-- android -->
   <platform name="android">
-    <lib-file src="src/android/libs/bugly_crash_release.jar" />
     <source-file src="src/android/CDVBugly.java" target-dir="src/com/jasonz/cordova/bugly" />
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
@@ -38,6 +37,7 @@
       </feature>
       <preference name="ANDROID_APPID" value="$ANDROID_APPID"/>
     </config-file>
+    <framework src="com.tencent.bugly:crashreport:latest.release" />
   </platform>
 
   <!-- ios -->
@@ -49,7 +49,7 @@
     <framework src="Security.framework" />
     <framework src="libz.tbd" />
     <framework src="libc++.tbd" />
-    <framework src="src/ios/Bugly.framework" custom="true" />
+    <framework src="Bugly" type="podspec" spec="~> 2.5.0" />
     <config-file target="config.xml" parent="/*">
         <feature name="Bugly">
           <param name="ios-package" value="CDVBugly"/>
