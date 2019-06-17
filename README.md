@@ -21,7 +21,7 @@ more info, visit https://bugly.qq.com/docs/
 ## install
 
 ```shell
-cordova plugin add cordova-plugin-bugly-sdk  --variable ANDROID_APPID=your value --variable IOS_APPID=your value
+cordova plugin add @osvlabs/cordova-plugin-bugly-sdk  --variable ANDROID_APPID=your value --variable IOS_APPID=your value
 ```
 
 

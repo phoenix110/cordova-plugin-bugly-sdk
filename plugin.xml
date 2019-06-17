@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     id="cordova-plugin-bugly-sdk"
-    version="1.0.1">
+    version="1.0.2">
 
   <name>Bugly</name>
   <description>Bugly SDK Cordova Plugin </description>
