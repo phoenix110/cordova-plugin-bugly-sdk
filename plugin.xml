@@ -2,7 +2,7 @@
 
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     id="cordova-plugin-bugly-sdk"
-    version="1.0.2">
+    version="1.0.3">
 
   <name>Bugly</name>
   <description>Bugly SDK Cordova Plugin </description>
@@ -14,12 +14,15 @@
   <issue>https://github.com/jasonz1987/cordova-plugin-bugly-sdk/issues</issue>
 
   <preference name="ANDROID_APPID" />
+  <preference name="ANDROID_APPKEY" />
   <preference name="IOS_APPID" />
   <js-module name="Bugly" src="www/bugly.js">
     <clobbers target="Bugly"/>
   </js-module>
   <!-- android -->
   <platform name="android">
+    <hook type="after_plugin_add" src="scripts/after_plugin_add.js" />
+    <hook type="before_plugin_uninstall" src="scripts/before_plugin_uninstall.js" />
     <source-file src="src/android/CDVBugly.java" target-dir="src/com/jasonz/cordova/bugly" />
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
@@ -30,14 +33,17 @@
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <meta-data android:name="BUGLY_APPID" android:value="$ANDROID_APPID" />
+      <meta-data android:name="ANDROID_APPKEY" android:value="$ANDROID_APPKEY" />
     </config-file>
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="Bugly">
         <param name="android-package" value="com.jasonz.cordova.bugly.CDVBugly"/>
       </feature>
       <preference name="ANDROID_APPID" value="$ANDROID_APPID"/>
+      <preference name="ANDROID_APPKEY" value="$ANDROID_APPKEY" />
     </config-file>
     <framework src="com.tencent.bugly:crashreport:latest.release" />
+  <framework src="sdk/android/build-bugly.gradle" custom="true" type="gradleReference" />
   </platform>
 
   <!-- ios -->

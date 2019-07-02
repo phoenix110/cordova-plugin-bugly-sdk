@@ -1,0 +1,7 @@
+apply plugin: 'bugly'
+
+bugly {
+    appId = "BUGLY_APP_ID"
+    appKey = "BUGLY_APP_KEY"
+    debug = true
+}
