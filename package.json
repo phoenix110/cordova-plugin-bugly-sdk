@@ -1,8 +1,8 @@
 {
   "name": "@osvlabs/cordova-plugin-bugly-sdk",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "cordova": {
-    "id": "cordova-plugin-bugly-sdk",
+    "id": "cordova-plugin-bugly-sdk-osvlab",
     "platforms": [
       "android",
       "ios"
@@ -20,6 +20,6 @@
     "exception",
     "symbol"
   ],
-  "author":"vitta",
+  "author": "vitta",
   "license": "Apache 2.0 License"
 }
