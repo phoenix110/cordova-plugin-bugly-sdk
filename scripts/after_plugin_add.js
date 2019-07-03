@@ -40,7 +40,7 @@ module.exports = function (context) {
     var str = strs[strs.length - 1];
     return str.substr(0, str.length - 1) + "-build-bugly.gradle";
   }
-  searchFile(getFileName(), 'platforms/android/cordova-plugin-bugly-sdk');
+  searchFile(getFileName(), 'platforms/android/cordova-plugin-bugly-sdk-osvlab');
 
   helper.restoreRootBuildGradle();
   helper.modifyRootBuildGradle();
