@@ -1,22 +1,26 @@
 package com.jasonz.cordova.bugly;
 
-import org.apache.cordova.BuildConfig;
-import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaArgs;
-import org.apache.cordova.CordovaInterface;
-import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.BuildConfig;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.CordovaArgs;
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 
-import android.util.Log;
-import android.webkit.WebView;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.Application;
-
-import com.tencent.bugly.crashreport.CrashReport;
-import com.tencent.bugly.crashreport.CrashReport.UserStrategy;
+import android.util.Log;
+import android.webkit.WebView;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import android.app.Application;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.bugly.crashreport.CrashReport.UserStrategy;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.UpgradeInfo;
+import com.tencent.bugly.beta.upgrade.UpgradeStateListener;
 
 public class CDVBugly extends CordovaPlugin {
     public static final String TAG = "Cordova.Plugin.Bugly";
@@ -28,6 +32,68 @@ public class CDVBugly extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         APP_ID = webView.getPreferences().getString(BUGLY_APP_ID,"");
+
+        Beta.autoCheckUpgrade = false;
+		Beta.upgradeStateListener = new UpgradeStateListener() {
+			@Override
+			public void onUpgradeSuccess(boolean isManual) {
+				if (callbackContext != null) {
+					UpgradeInfo upgradeInfo = Beta.getUpgradeInfo();
+					if (upgradeInfo != null) {
+						try {
+							JSONObject result = new JSONObject();
+							result.put("title", upgradeInfo.title);
+							// 升级说明
+							result.put("newFeature", upgradeInfo.newFeature);
+							result.put("versionCode", upgradeInfo.versionCode);
+							result.put("versionName", upgradeInfo.versionName);
+							result.put("apkUrl", upgradeInfo.apkUrl);
+							result.put("fileSize", upgradeInfo.fileSize);
+
+							//			info.append("id: ").append(upgradeInfo.id).append("\n");
+							//			info.append("标题: ").append(upgradeInfo.title).append("\n");
+							//			info.append("升级说明: ").append(upgradeInfo.newFeature).append("\n");
+							//			info.append("versionCode: ").append(upgradeInfo.versionCode).append("\n");
+							//			info.append("versionName: ").append(upgradeInfo.versionName).append("\n");
+							//			info.append("发布时间: ").append(upgradeInfo.publishTime).append("\n");
+							//			info.append("安装包Md5: ").append(upgradeInfo.apkMd5).append("\n");
+							//			info.append("安装包下载地址: ").append(upgradeInfo.apkUrl).append("\n");
+							//			info.append("安装包大小: ").append(upgradeInfo.fileSize).append("\n");
+							//			info.append("弹窗间隔（ms）: ").append(upgradeInfo.popInterval).append("\n");
+							//			info.append("弹窗次数: ").append(upgradeInfo.popTimes).append("\n");
+							//			info.append("发布类型（0:测试 1:正式）: ").append(upgradeInfo.publishType).append("\n");
+							//			info.append("弹窗类型（1:建议 2:强制 3:手工）: ").append(upgradeInfo.upgradeType).append("\n");
+							//			info.append("图片地址：").append(upgradeInfo.imageUrl);
+							callbackContext.success(result);
+						} catch (Exception ex) {
+							callbackContext.error(ex.getMessage());
+						}
+					}
+				}
+			}
+
+			@Override
+			public void onUpgradeFailed(boolean isManual) {
+				Log.d(TAG, "UPGRADE_FAILED");
+			}
+
+			@Override
+			public void onUpgrading(boolean isManual) {
+				Log.d(TAG, "UPGRADE_CHECKING");
+			}
+
+			@Override
+			public void onDownloadCompleted(boolean b) {
+				Log.d(TAG, "DownloadCompleted");
+			}
+
+			@Override
+			public void onUpgradeNoVersion(boolean isManual) {
+				if (callbackContext != null)
+					callbackContext.success("");
+			}
+		};
+		Bugly.init(this.cordova.getActivity().getApplicationContext(), APP_ID, false);
     }
 
     @Override
@@ -49,8 +115,11 @@ public class CDVBugly extends CordovaPlugin {
             return this.testNativeCrash(args, callbackContext);
         } else if (action.equals("testANRCrash")){
             return this.testANRCrash(args, callbackContext);
-        }
-
+        }else if (action.equals("checkUpgrade")) {
+			return this.checkUpgrade(callbackContext);
+		}else if (action.equals("getAppInfo")) {
+			return this.getAppInfo(callbackContext);
+		}
         return false;
     }
 
@@ -181,4 +250,24 @@ public class CDVBugly extends CordovaPlugin {
         return true;
     }
 
+	private boolean checkUpgrade(CallbackContext callbackContext) {
+		this.callbackContext = callbackContext;
+		Beta.checkUpgrade();
+        return true;
+	}
+
+	private boolean getAppInfo(CallbackContext callbackContext) {
+		try {
+			PackageManager packageManager = this.cordova.getActivity().getPackageManager();
+			PackageInfo packageInfo = packageManager.getPackageInfo(
+					this.cordova.getActivity().getPackageName(), 0);
+			JSONObject result = new JSONObject();
+			result.put("versionName", packageInfo.versionName);
+			result.put("versionCode", String.valueOf(packageInfo.versionCode));
+			callbackContext.success(result);
+		} catch (Exception e) {
+			callbackContext.error(e.getMessage());
+		}
+        return true;
+	}
 }

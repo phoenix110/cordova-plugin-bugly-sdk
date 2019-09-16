@@ -34,6 +34,13 @@
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
       <meta-data android:name="BUGLY_APPID" android:value="$ANDROID_APPID" />
       <meta-data android:name="ANDROID_APPKEY" android:value="$ANDROID_APPKEY" />
+      <activity android:configChanges="keyboardHidden|orientation|screenSize|locale"
+                android:name="com.tencent.bugly.beta.ui.BetaActivity"
+                android:theme="@android:style/Theme.Translucent"/>
+      <provider android:authorities="${applicationId}.fileProvider" android:exported="false"
+                android:grantUriPermissions="true" android:name="android.support.v4.content.FileProvider">
+          <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/provider_paths"/>
+      </provider>
     </config-file>
     <config-file target="res/xml/config.xml" parent="/*">
       <feature name="Bugly">
@@ -42,7 +49,8 @@
       <preference name="ANDROID_APPID" value="$ANDROID_APPID"/>
       <preference name="ANDROID_APPKEY" value="$ANDROID_APPKEY" />
     </config-file>
-    <framework src="com.tencent.bugly:crashreport:latest.release" />
+    <resource-file src="src/android/res/xml/provider_paths.xml" target="res/xml/provider_paths.xml"/>
+    <framework src="com.tencent.bugly:crashreport_upgrade:latest.release" />
   <framework src="sdk/android/build-bugly.gradle" custom="true" type="gradleReference" />
   </platform>
 

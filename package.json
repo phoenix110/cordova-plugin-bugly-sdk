@@ -1,16 +1,16 @@
 {
-  "name": "@osvlabs/cordova-plugin-bugly-sdk",
-  "version": "1.0.5",
+  "name": "@phoenix110/cordova-plugin-bugly-sdk",
+  "version": "1.0.0",
   "cordova": {
-    "id": "cordova-plugin-bugly-sdk-osvlab",
+    "id": "cordova-plugin-bugly-sdk-phoenix110",
     "platforms": [
       "android",
       "ios"
     ]
   },
-  "description": "Cordova Crash Reporter",
-  "repository": "https://github.com/osvlabs/cordova-plugin-bugly-sdk.git",
-  "issue": "https://github.com/osvlabs/cordova-plugin-bugly-sdk/issues",
+  "description": "Cordova Crash Reporter And Upgrade",
+  "repository": "https://github.com/phoenix110/cordova-plugin-bugly-sdk.git",
+  "issue": "https://github.com/phoenix110/cordova-plugin-bugly-sdk/issues",
   "keywords": [
     "cordova",
     "bugly",
